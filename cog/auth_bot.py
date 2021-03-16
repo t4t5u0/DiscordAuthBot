@@ -12,26 +12,26 @@ class AuthBotCog(commands.Cog, name="auth"):
 
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.authed_user_role = 821195739492515853
-        self.auth_channel = 821195590008307773
+        self.authed_user_role = 821195739492515853 # id をコピーする
+        self.auth_channel = 821195590008307773 # id をコピーする
 
     @commands.command()
     async def auth(self, ctx: commands.Context, *, info):
         if ctx.channel.id != self.auth_channel:
-            channel = discord.utils.get(
+            channel: discord.TextChannel = discord.utils.get(
                 ctx.guild.channels, id=self.auth_channel)
-            await ctx.send(f'{channel}  内で入力してください')
+            await ctx.send(f'{channel.mention}  内で入力してください')
             return
         tmp = info.split()
         if len(tmp) != 2:
             await ctx.send("不正な入力です．入力を見直してください")
             return
         num, name = tmp
-        await ctx.send(f"{num=}, {name=}")
-
-        df = pd.read_csv('./data.csv', delimiter=',')
+        # 下三桁 -1 がインデックスになる
+        num = int(num) % 1000 - 1 
+        df = pd.read_csv('./data.csv', delimiter=',', header=0)
         flag = int(df.at[num, 'flag'])
-        print(df.iloc[num])
+
         if df.at[num, 'name'] != name:
             await ctx.send('不正な入力です．入力を見直してください')
             return
@@ -40,7 +40,6 @@ class AuthBotCog(commands.Cog, name="auth"):
             return
 
         df.at[num, 'flag'] = 1
-        print(df.iloc[num])
         role = discord.utils.find(
             lambda r: r.id == self.authed_user_role, ctx.guild.roles)
         await ctx.author.add_roles(role)
