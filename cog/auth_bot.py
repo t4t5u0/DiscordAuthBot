@@ -29,10 +29,12 @@ class AuthBotCog(commands.Cog, name="auth"):
                 ctx.guild.channels, id=self.auth_channel)
             await ctx.send(f'{channel.mention}  内で入力してください')
             return
+
         tmp: list[str] = info.split()
-        # 名字 名前 -> 名字名前
-        tmp[1] = ''.join(tmp[1:])
-        del tmp[2:]
+        if len(tmp) ==3:
+            # 名字 名前 -> 名字名前
+            tmp[1] = ''.join(tmp[1:])
+            del tmp[2:]
 
         if len(tmp) != 2:
             await ctx.send("不正な入力です．入力を見直してください")
