@@ -30,7 +30,7 @@ class AuthBotCog(commands.Cog, name="auth"):
             await ctx.send(f'{channel.mention}  内で入力してください')
             return
         tmp: list[str] = info.split()
-        # 名字名前 -> 名字名前
+        # 名字 名前 -> 名字名前
         tmp[1] = ''.join(tmp[1:])
         del tmp[2:]
 
