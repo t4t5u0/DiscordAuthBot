@@ -29,13 +29,17 @@ class AuthBotCog(commands.Cog, name="auth"):
                 ctx.guild.channels, id=self.auth_channel)
             await ctx.send(f'{channel.mention}  内で入力してください')
             return
-        tmp = info.split()
+        tmp: list[str] = info.split()
+        # 名字名前 -> 名字名前
+        tmp[1] = ''.join(tmp[1:])
+        del tmp[2:]
+
         if len(tmp) != 2:
             await ctx.send("不正な入力です．入力を見直してください")
             return
         num, name = tmp
         # 下三桁 -1 がインデックスになる
-        num = int(num) % 1000 - 1
+        num = int(num.removeprefix('b')) % 1000 - 1
         df = pd.read_csv('./data.csv', delimiter=',', header=0)
         flag = int(df.at[num, 'flag'])
 
