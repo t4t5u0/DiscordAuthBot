@@ -40,11 +40,19 @@ class AuthBotCog(commands.Cog, name="auth"):
             return
 
         df.at[num, 'flag'] = 1
+        df.to_csv('./data.csv')
+        print(df.at[num, 'flag'])
+        # self.write_csv(df, num)
         role = discord.utils.find(
             lambda r: r.id == self.authed_user_role, ctx.guild.roles)
         await ctx.author.add_roles(role)
         await ctx.send(f'{ctx.author.mention} は正しく認証されました. Enjoy this server!')
 
+    # @commands.command(hidden=True)
+    # async def write_csv(df: pd.DataFrame, num: int):
+    #     await print('hoge')
+    #     await df.at[num, 'flag'] = 1
 
 def setup(bot: commands.Bot):
     return bot.add_cog(AuthBotCog(bot))
+
