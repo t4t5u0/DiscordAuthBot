@@ -31,7 +31,7 @@ class AuthBotCog(commands.Cog, name="auth"):
             return
 
         tmp: list[str] = info.split()
-        if len(tmp) ==3:
+        if len(tmp) == 3:
             # 名字 名前 -> 名字名前
             tmp[1] = ''.join(tmp[1:])
             del tmp[2:]
