@@ -1,7 +1,10 @@
+import configparser
+from pathlib import Path
+
 import discord
+import pandas as pd
 from discord import channel
 from discord.ext import commands
-import pandas as pd
 
 
 class AuthBotCog(commands.Cog, name="auth"):
@@ -11,9 +14,13 @@ class AuthBotCog(commands.Cog, name="auth"):
     """
 
     def __init__(self, bot: commands.Bot) -> None:
+        _path = Path.cwd().glob('**/config.ini')
+        _config = configparser.ConfigParser()
+        _config.read(_path)
+
         self.bot = bot
-        self.authed_user_role = 821195739492515853 # id をコピーする
-        self.auth_channel = 821195590008307773 # id をコピーする
+        self.authed_user_role: int = _config['SERVER']['roll_id']
+        self.auth_channel: int = _config['SERVER']['channel']
 
     @commands.command()
     async def auth(self, ctx: commands.Context, *, info):
@@ -28,7 +35,7 @@ class AuthBotCog(commands.Cog, name="auth"):
             return
         num, name = tmp
         # 下三桁 -1 がインデックスになる
-        num = int(num) % 1000 - 1 
+        num = int(num) % 1000 - 1
         df = pd.read_csv('./data.csv', delimiter=',', header=0)
         flag = int(df.at[num, 'flag'])
 
@@ -53,6 +60,6 @@ class AuthBotCog(commands.Cog, name="auth"):
     #     await print('hoge')
     #     await df.at[num, 'flag'] = 1
 
+
 def setup(bot: commands.Bot):
     return bot.add_cog(AuthBotCog(bot))
-
