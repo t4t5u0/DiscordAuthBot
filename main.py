@@ -12,7 +12,7 @@ def main():
     config.read(path)
     TOKEN = config['TOKEN']['token']
 
-    prefix = '/'
+    prefix = '!'
     bot = Bot(command_prefix=prefix)
     bot.load_extension('cog.auth_bot')
 
