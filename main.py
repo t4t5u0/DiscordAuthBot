@@ -15,6 +15,12 @@ def main():
     prefix = '/'
     bot = Bot(command_prefix=prefix)
     bot.load_extension('cog.auth_bot')
+
+    @bot.event
+    async def on_ready():
+        print('login')
+        await bot.change_presence(activity=discord.Game('!auth 学籍番号 名前')) 
+
     bot.run(TOKEN)
 
 
