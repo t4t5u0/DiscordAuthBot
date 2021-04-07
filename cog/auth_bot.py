@@ -1,3 +1,4 @@
+import re
 import configparser
 from pathlib import Path
 
@@ -21,6 +22,28 @@ class AuthBotCog(commands.Cog, name="auth"):
         self.bot = bot
         self.authed_user_role: int = int(_config['SERVER']['role_id'])
         self.auth_channel: int = int(_config['SERVER']['channel'])
+
+        self.ptn_list: list[str] = []
+
+    @commands.command()
+    async def add_email(self, ctx: commands.Context, ptn: str):
+        self.ptn_list.append(ptn)
+        await ctx.send(f"規則 `{ptn!r}` を登録しました")
+
+    @commands.command()
+    async def rm_email(self, ctx: commands.Context, num: int):
+        if len(self.ptn_list) > num:
+            await ctx.send(f"規則{num} は存在しません")
+            return
+        ptn = self.ptn_list[num]
+        await ctx.send(f"規則{num}, `{ptn!r}` を削除しました")
+
+    @commands.command()
+    async def show_email(self, ctx: commands.Context):
+        await ctx.send("メールアドレス規則一覧")
+        for i, ptn in enumerate(self.ptn_list):
+            l = len(str(i))
+            await ctx.send(f"{i:l} {ptn!r}")
 
     @commands.command()
     async def auth(self, ctx: commands.Context, *, info):
@@ -69,3 +92,10 @@ class AuthBotCog(commands.Cog, name="auth"):
 
 def setup(bot: commands.Bot):
     return bot.add_cog(AuthBotCog(bot))
+
+
+def is_match_regex(ptn_list: list[str], target: str) -> bool:
+    for ptn in ptn_list:
+        if re.fullmatch(ptn, target):
+            return True
+    return False
