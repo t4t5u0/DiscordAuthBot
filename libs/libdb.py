@@ -23,7 +23,7 @@ def db_create():
         CREATE TABLE IF NOT EXISTS token_table(
             e-mail      TEXT PRIMARY KEY,
             token       TEXT,
-            time        INTEGER,
+            created_at  INTEGER,
             miss_count  INTEGER
         );
     """
