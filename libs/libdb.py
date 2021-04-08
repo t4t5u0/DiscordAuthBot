@@ -1,6 +1,7 @@
 import sqlite3
 from pathlib import Path
 from datetime import datetime
+from typing import Option
 
 
 def db_connection() -> sqlite3.Connection:
@@ -11,14 +12,15 @@ def db_connection() -> sqlite3.Connection:
     return conn
 
 
-def db_execute(query: str, *args):
+def db_execute(query: str, *args) -> sqlite3.Cursor:
     conn = db_connection()
     if len(args):
-        conn.execute(query, args)
+        result = conn.execute(query, args)
     else:
-        conn.execute(query)
+        result = conn.execute(query)
     conn.commit()
     conn.close()
+    return result
 
 
 def db_create():
