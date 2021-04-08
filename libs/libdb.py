@@ -23,6 +23,7 @@ def db_create():
         CREATE TABLE IF NOT EXISTS token_table(
             e-mail      TEXT PRIMARY KEY,
             token       TEXT,
+            time        INTEGER,
             miss_count  INTEGER
         );
     """
@@ -31,3 +32,6 @@ def db_create():
     conn.execute(db2)
     conn.commit()
     conn.close()
+
+
+
