@@ -12,9 +12,9 @@ def db_connection() -> sqlite3.Connection:
     return conn
 
 
-def db_execute(query: str, *args) -> sqlite3.Cursor:
+def db_execute(query: str, *args: tuple) -> sqlite3.Cursor:
     conn = db_connection()
-    if len(args):
+    if args:
         result = conn.execute(query, args)
     else:
         result = conn.execute(query)
