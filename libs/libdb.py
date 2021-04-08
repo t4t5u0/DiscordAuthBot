@@ -34,4 +34,17 @@ def db_create():
     conn.close()
 
 
+def db_insert_email():
+    pass
 
+
+def db_delete_email():
+    pass
+
+
+def db_insert_token():
+    pass
+
+
+def db_delete_token():
+    pass
