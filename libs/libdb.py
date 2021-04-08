@@ -11,6 +11,16 @@ def db_connection() -> sqlite3.Connection:
     return conn
 
 
+def db_execute(query: str, *args):
+    conn = db_connection()
+    if len(args):
+        conn.execute(query, args)
+    else:
+        conn.execute(query)
+    conn.commit()
+    conn.close()
+
+
 def db_create():
     db1 = """
         CREATE TABLE IF NOT EXISTS e-mail_table (
@@ -27,46 +37,32 @@ def db_create():
             miss_count  INTEGER
         );
     """
-    conn = db_connection()
-    conn.execute(db1)
-    conn.execute(db2)
-    conn.commit()
-    conn.close()
+    db_execute(db1)
+    db_execute(db2)
 
 
 def db_insert_email(discord_id: str, email: str):
     query = "INSERT INTO e-mail_table VALUES(?, ?)"
-
-    conn = db_connection()
-    conn.execute(query, (discord_id, email))
-    conn.commit()
-    conn.close()
+    db_execute(query, discord_id, email)
 
 
 def db_delete_email(discord_id: str):
     query = "DELETE FROM e-mail_table WHERE discord_id = ?"
-    conn = db_connection()
-    conn.execute(query, (discord_id,))
-    conn.commit()
-    conn.close()
+    db_execute(query, discord_id)
 
 
 def db_insert_token(email: str, token: str):
     query = "INSERT INTO token_table VALUES(?, ?, ?, ?)"
     created_at = datetime.timestamp(datetime.now()).__int__()
     miss_count = 0
-    conn = db_connection()
-    conn.execute(query, (email, token, created_at, miss_count))
-    conn.close()
+    db_execute(query, email, token, created_at, miss_count)
 
 
 def db_delete_token(email: str):
     query = "DELETE FROM e_mail_table WHERE email = ?"
-    conn = db_connection()
-    conn.execute(query, email)
-    conn.commit()
-    conn.close()
+    db_execute(query, email)
 
 
 def miss_count_up(discord_id: str):
-    pass
+    query = "UPDATE token_table SET miss_count = miss_count + 1 WHERE discord_id = ?"
+    db_execute(query, discord_id)
