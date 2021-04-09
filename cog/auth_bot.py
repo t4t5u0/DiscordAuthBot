@@ -43,7 +43,7 @@ class AuthBotCog(commands.Cog, name="auth"):
         await ctx.send("メールアドレス規則一覧")
         for i, ptn in enumerate(self.ptn_list):
             l = len(str(i))
-            await ctx.send(f"{i:l} {ptn!r}")
+            await ctx.send(f"{i:{l}} {ptn!r}")
 
     @commands.command()
     async def auth(self, ctx: commands.Context, *, info):
