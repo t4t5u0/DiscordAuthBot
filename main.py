@@ -19,7 +19,7 @@ def main():
     @bot.event
     async def on_ready():
         print('login')
-        await bot.change_presence(activity=discord.Game('!auth 学籍番号 名前')) 
+        await bot.change_presence(activity=discord.Game(f'{prefix}auth 学籍番号 名前')) 
 
     bot.run(TOKEN)
 
