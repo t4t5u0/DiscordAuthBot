@@ -5,7 +5,7 @@ from datetime import datetime
 from hashlib import shake_128
 
 
-def create_token(n=8: int) -> str:
+def create_token(n=8) -> str:
     "n桁のトークンを発行する関数"
     t = datetime.timestamp(datetime.now()).__int__().__str__().encode()
     h = hashlib.sha256(t).hexdigest()[:n]

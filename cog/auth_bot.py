@@ -3,7 +3,7 @@ import configparser
 from pathlib import Path
 
 import discord
-import pandas as pd
+# import pandas as pd
 from discord import channel
 from discord.ext import commands
 

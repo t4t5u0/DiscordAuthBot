@@ -1,7 +1,7 @@
 import sqlite3
 from pathlib import Path
 from datetime import datetime
-from typing import Option
+# from typing import Optional
 
 
 def db_connection() -> sqlite3.Connection:
