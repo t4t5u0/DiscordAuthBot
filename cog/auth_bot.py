@@ -72,8 +72,10 @@ class AuthBotCog(commands.Cog, name="auth"):
             return
         # メールアドレスを格納する処理をする
         discord_id = ctx.author.id.__str__()
-        libdb.db_insert_email(discord_id, e_mail_address)
         # insertよりもupsertしたほうがいい気がする
+        libdb.db_insert_email(discord_id, e_mail_address)
+        # tokenの追加処理。ここもupsertしたほうがいい気がする
+        libdb.db_insert_token(e_mail_address, token)
 
     @commands.command()
     async def reg(self, ctx: commands.Context, token: str):
