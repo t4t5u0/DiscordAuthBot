@@ -13,6 +13,7 @@ def db_connection() -> sqlite3.Connection:
 
 
 def db_execute(query: str, *args: tuple) -> sqlite3.Cursor:
+    "ラッパー"
     conn = db_connection()
     if args:
         result = conn.execute(query, args)
@@ -44,16 +45,19 @@ def db_create():
 
 
 def db_insert_email(discord_id: str, email: str):
+    "メールアドレスを挿入する"
     query = "INSERT INTO e-mail_table VALUES(?, ?)"
     db_execute(query, discord_id, email)
 
 
 def db_delete_email(discord_id: str):
+    "メールアドレスを削除する"
     query = "DELETE FROM e-mail_table WHERE discord_id = ?"
     db_execute(query, discord_id)
 
 
 def db_insert_token(email: str, token: str):
+    "トークンを挿入する"
     query = "INSERT INTO token_table VALUES(?, ?, ?, ?)"
     created_at = datetime.timestamp(datetime.now()).__int__()
     miss_count = 0
@@ -61,10 +65,12 @@ def db_insert_token(email: str, token: str):
 
 
 def db_delete_token(email: str):
+    "トークンを削除する"
     query = "DELETE FROM e_mail_table WHERE email = ?"
     db_execute(query, email)
 
 
 def miss_count_up(discord_id: str):
+    "トークン入力を失敗したら回数を増やす"
     query = "UPDATE token_table SET miss_count = miss_count + 1 WHERE discord_id = ?"
     db_execute(query, discord_id)
