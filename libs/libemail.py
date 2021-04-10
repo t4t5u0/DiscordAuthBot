@@ -36,15 +36,21 @@ def create_email(token: str, to_addr: str, server_name: str) -> MIMEText:
     return msg
 
 
-def send_email(to_addr: str, body_msg: MIMEText) -> tuple:
+def send_email(to_addr: str, body_msg: MIMEText) -> bool:
     smtpobj = smtplib.SMTP('smtp.gmail.com', 587)
     # smtpobj.ehlo()
     smtpobj.starttls()
     # smtpobj.ehlo()
-    result = smtpobj.login(FROM_ADDR, PASS)
+    smtpobj.login(FROM_ADDR, PASS)
     # (235, b'2.7.0 Accepted')
 
     # ?try-exception する？
-    smtpobj.sendmail(FROM_ADDR, to_addr, body_msg.as_string())
-    smtpobj.close()
-    return result
+    try:
+        smtpobj.sendmail(FROM_ADDR, to_addr, body_msg.as_string())
+        smtpobj.close()
+        return True
+    except:
+        # 実装めんどくなったから、これで
+        # 後でちゃんと作るかも
+        return False
+    
