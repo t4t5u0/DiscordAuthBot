@@ -1,11 +1,13 @@
-import re
 import configparser
+import re
+import sys
 from pathlib import Path
 
 import discord
 # import pandas as pd
 from discord import channel
 from discord.ext import commands
+from libs import libdb, libemail, libmisc, libregex
 
 
 class AuthBotCog(commands.Cog, name="auth"):
@@ -46,13 +48,19 @@ class AuthBotCog(commands.Cog, name="auth"):
             await ctx.send(f"{i:{l}} {ptn!r}")
 
     @commands.command()
-    async def auth(self, ctx: commands.Context, *, info):
+    async def auth(self, ctx: commands.Context, e_mail_address: str):
+        "認証メールを飛ばすやつ"
         # private only
-        # 
+        #
+        token = libmisc.create_token()
+        e_mail = libemail.create_email(token, e_mail_address, "a")
+        libemail.send_email(e_mail)
+        await ctx.send(f"{e_mail_address}")
 
+    @commands.command()
+    async def reg(self, ctx: commands.Context, token: str):
         pass
 
 
 def setup(bot: commands.Bot):
     return bot.add_cog(AuthBotCog(bot))
-

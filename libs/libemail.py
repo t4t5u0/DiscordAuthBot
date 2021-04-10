@@ -19,7 +19,7 @@ PASS = config['EMAIL']['pass']
 
 
 def create_email(token: str, to_addr: str, server_name: str) -> MIMEText:
-
+    "メールを生成"
     msg = MIMEText(
         'こんにちは。DiscordAuthBotです。\n\n'
         f'このメールは、{server_name} にて、ユーザを認証するためのものです。'
