@@ -54,8 +54,11 @@ class AuthBotCog(commands.Cog, name="auth"):
         #
         token = libmisc.create_token()
         e_mail = libemail.create_email(token, e_mail_address, "a")
-        libemail.send_email(e_mail)
-        await ctx.send(f"{e_mail_address}")
+        result = libemail.send_email(e_mail)
+        if result:
+            await ctx.send(f"{e_mail_address}")
+        else:
+            await ctx.send("送信失敗")
 
     @commands.command()
     async def reg(self, ctx: commands.Context, token: str):
