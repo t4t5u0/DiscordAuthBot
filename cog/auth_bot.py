@@ -79,8 +79,19 @@ class AuthBotCog(commands.Cog, name="auth"):
 
     @commands.command()
     async def reg(self, ctx: commands.Context, token: str):
-
-        pass
+        discord_id = ctx.author.id.__str__()
+        email = libdb.db_get_email_address(discord_id)
+        lawtoken = libdb.db_get_token(email)
+        if lawtoken == token:
+            # 認証ができたら、tokenは消していい
+            libdb.db_delete_token(email)
+            await ctx.send("認証おっけー")
+        else:
+            # 認証に失敗したら、失敗カウントをインクリメント
+            # 回数もほしいし、副作用を減らしてもいいかなと
+            libdb.miss_count_up(discord_id)
+            await ctx.send("認証失敗 3回失敗するとトークンが無効化されます")
+            
 
 
 def setup(bot: commands.Bot):
