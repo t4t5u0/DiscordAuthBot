@@ -52,6 +52,12 @@ class AuthBotCog(commands.Cog, name="auth"):
         "認証メールを飛ばすやつ"
         # private only
         # 無効なアドレスに送信したとき、弾けていない
+        if not e_mail_address:
+            await ctx.send("メールアドレスを入力してください")
+            return
+        if not libregex.is_match_regex(self.ptn_list, e_mail_address):
+            await ctx.send("不正なメールアドレスです。入力規則を確認してください")
+            return
         token = libmisc.create_token()
         e_mail = libemail.create_email(token, e_mail_address, "a")
         result = libemail.send_email(e_mail)
@@ -71,6 +77,7 @@ class AuthBotCog(commands.Cog, name="auth"):
 
     @commands.command()
     async def reg(self, ctx: commands.Context, token: str):
+
         pass
 
 
