@@ -20,8 +20,8 @@ class AuthBotCog(commands.Cog, name="auth"):
         _config.read(_path)
 
         self.bot = bot
-        self.authed_user_role: int = int(_config['SERVER']['role_id'])
-        self.auth_channel: int = int(_config['SERVER']['channel'])
+        # self.authed_user_role: int = int(_config['SERVER']['role_id'])
+        # self.auth_channel: int = int(_config['SERVER']['channel'])
 
         self.ptn_list: list[str] = []
 
