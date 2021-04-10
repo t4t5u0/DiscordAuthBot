@@ -51,14 +51,23 @@ class AuthBotCog(commands.Cog, name="auth"):
     async def auth(self, ctx: commands.Context, e_mail_address: str):
         "認証メールを飛ばすやつ"
         # private only
-        #
+        # 無効なアドレスに送信したとき、弾けていない
         token = libmisc.create_token()
         e_mail = libemail.create_email(token, e_mail_address, "a")
         result = libemail.send_email(e_mail)
         if result:
-            await ctx.send(f"{e_mail_address}")
+            # 仮の処理
+            await ctx.send(f"{e_mail_address} にメールを送信しました。"
+                           f"次に、`{self.bot.command_prefix}reg token` を叩いてください。"
+                           f"メールアドレスに誤りがある場合は、もう一度 `{self.bot.command_prefix}auth email_addr` を叩いてください")
         else:
             await ctx.send("送信失敗")
+            # 処理終了
+            return
+        # メールアドレスを格納する処理をする
+        discord_id = ctx.author.id.__str__()
+        libdb.db_insert_email(discord_id, e_mail_address)
+        # insertよりもupsertしたほうがいい気がする
 
     @commands.command()
     async def reg(self, ctx: commands.Context, token: str):
